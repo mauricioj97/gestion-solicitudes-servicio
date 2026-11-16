@@ -4,17 +4,21 @@ No es obligatorio (las pruebas también se pueden hacer a mano en http://localho
 este script solo repite los mismos pasos de docs/pruebas.md y deja el registro de cada
 petición y respuesta en evidencias/resultados_pruebas_api.md.
 
-Uso (con el servidor encendido y la base de datos de demostración cargada):
+Uso (con el servidor encendido y la base de datos de demostración recién cargada):
     python pruebas/ejecutar_pruebas.py
+
+Para usar otro puerto, definir la variable PRUEBAS_URL, por ejemplo (PowerShell):
+    $env:PRUEBAS_URL = "http://localhost:8010"; python pruebas/ejecutar_pruebas.py
 """
 import json
+import os
 import sqlite3
 import urllib.error
 import urllib.request
 from datetime import datetime
 from pathlib import Path
 
-BASE = "http://localhost:8000"
+BASE = os.environ.get("PRUEBAS_URL", "http://localhost:8000").rstrip("/")
 RAIZ = Path(__file__).resolve().parent.parent
 SALIDA = RAIZ / "evidencias" / "resultados_pruebas_api.md"
 DB = RAIZ / "backend" / "data" / "solicitudes.db"
@@ -69,8 +73,8 @@ def login(cred):
 def main():
     t_coord, t_enc1, t_enc2 = login(COORDINACION), login(ENCARGADO1), login(ENCARGADO2)
     nueva = {
-        "nombre": "Camila Andrea Rosales", "cedula": "1085999888", "direccion": "Carrera 22 # 14-30, Pasto",
-        "telefono": "3165554433", "correo": "camila.rosales@correo.com", "tipo_id": 3,
+        "nombre": "Camila Andrea Rosales", "cedula": "1000000010", "direccion": "Carrera 22 # 14-30, Pasto",
+        "telefono": "3000000010", "correo": "camila.rosales@ejemplo.com", "tipo_id": 3,
         "asunto": "Actualización de datos de contacto",
         "descripcion": "Solicito actualizar mi número de teléfono y correo en los registros de la organización.",
     }
@@ -154,6 +158,25 @@ def main():
     paso("PF-19", "Cerrar con motivo", "POST", f"/api/gestion/solicitudes/{otra_id}/cerrar",
          {"motivo": "El solicitante desistió de la solicitud por vía telefónica."}, token=t_coord,
          verificar=lambda r: r["estado"] == "CERRADA" and r["motivo_cierre"], rol="Coordinación")
+
+    # PF-20 Una radicación con una cédula ya registrada no altera los datos de otra solicitud (RN-13)
+    original = con.execute(
+        """SELECT so.nombre, so.telefono FROM solicitudes s JOIN solicitantes so ON so.id = s.solicitante_id
+           WHERE s.radicado = '51842093'"""
+    ).fetchone()
+    suplantacion = {**nueva, "nombre": "Persona Diferente", "cedula": "1000000001", "telefono": "3000000099",
+                    "asunto": "Radicación con cédula repetida"}
+    paso("PF-20", "Radicar con una cédula ya registrada no modifica solicitudes anteriores", "POST", "/api/solicitudes",
+         suplantacion, esperado=201, rol="Solicitante (sin cuenta)")
+    despues = con.execute(
+        """SELECT so.nombre, so.telefono FROM solicitudes s JOIN solicitantes so ON so.id = s.solicitante_id
+           WHERE s.radicado = '51842093'"""
+    ).fetchone()
+    intacto = original is not None and original == despues
+    registro.append(f"> Verificación en base de datos: datos del solicitante del radicado 51842093 antes = {original}, "
+                    f"después = {despues} → {'sin cambios ✅' if intacto else 'MODIFICADOS ❌'}\n")
+    if not intacto:
+        resultados[-1] = resultados[-1][:-1] + ("FALLIDA",)
 
     # PF-10 Consolidado
     paso("PF-10", "Consulta consolidada", "GET", "/api/reportes/resumen", token=t_coord,

@@ -1,9 +1,9 @@
 # Evidencia — Ejecución de pruebas funcionales de la API
 
-- **Fecha de ejecución:** 2026-11-16 10:31
+- **Fecha de ejecución:** 2026-11-16 13:43
 - **Servidor:** http://localhost:8000
-- **Resultado:** 25 de 25 pruebas aprobadas
-- **Solicitud usada en el flujo completo:** radicado `65106349`
+- **Resultado:** 26 de 26 pruebas aprobadas
+- **Solicitud usada en el flujo completo:** radicado `44798389`
 
 ## Resumen
 
@@ -12,7 +12,7 @@
 | PF-01 | Registro válido de solicitud | `POST /api/solicitudes` | Solicitante (sin cuenta) | 201 | 201 | Aprobada |
 | PF-02 | Registro con datos inválidos | `POST /api/solicitudes` | Solicitante (sin cuenta) | 422 | 422 | Aprobada |
 | PF-02b | Registro con tipo de servicio inexistente | `POST /api/solicitudes` | Solicitante (sin cuenta) | 422 | 422 | Aprobada |
-| PF-03 | Consulta de solicitud existente | `GET /api/solicitudes/consulta/65106349` | Solicitante (sin cuenta) | 200 | 200 | Aprobada |
+| PF-03 | Consulta de solicitud existente | `GET /api/solicitudes/consulta/44798389` | Solicitante (sin cuenta) | 200 | 200 | Aprobada |
 | PF-04 | Consulta de solicitud inexistente | `GET /api/solicitudes/consulta/00000000` | Solicitante (sin cuenta) | 404 | 404 | Aprobada |
 | PF-04b | Detalle interno de solicitud inexistente | `GET /api/gestion/solicitudes/99999` | Coordinación | 404 | 404 | Aprobada |
 | PF-13 | Inicio de sesión con contraseña incorrecta | `POST /api/auth/login` | Personal | 401 | 401 | Aprobada |
@@ -24,14 +24,15 @@
 | PF-15 | Finalizar sin haber evaluado (transición inválida) | `POST /api/gestion/solicitudes/9/finalizar` | Encargado 1 | 409 | 409 | Aprobada |
 | PF-05b | Evaluación por el encargado asignado | `POST /api/gestion/solicitudes/9/evaluar` | Encargado 1 | 200 | 200 | Aprobada |
 | PF-05c | Registro de seguimiento | `POST /api/gestion/solicitudes/9/seguimiento` | Encargado 1 | 200 | 200 | Aprobada |
-| PF-07 | Consulta de estado durante la atención | `GET /api/solicitudes/consulta/65106349` | Solicitante (sin cuenta) | 200 | 200 | Aprobada |
+| PF-07 | Consulta de estado durante la atención | `GET /api/solicitudes/consulta/44798389` | Solicitante (sin cuenta) | 200 | 200 | Aprobada |
 | PF-16 | Finalizar con respuesta vacía | `POST /api/gestion/solicitudes/9/finalizar` | Encargado 1 | 422 | 422 | Aprobada |
 | PF-09 | Responder y finalizar el caso | `POST /api/gestion/solicitudes/9/finalizar` | Encargado 1 | 200 | 200 | Aprobada |
-| PF-09b | El solicitante consulta la respuesta final | `GET /api/solicitudes/consulta/65106349` | Solicitante (sin cuenta) | 200 | 200 | Aprobada |
+| PF-09b | El solicitante consulta la respuesta final | `GET /api/solicitudes/consulta/44798389` | Solicitante (sin cuenta) | 200 | 200 | Aprobada |
 | PF-17 | Acción sobre solicitud finalizada | `POST /api/gestion/solicitudes/9/cerrar` | Coordinación | 409 | 409 | Aprobada |
 | PF-08 | Historial de atención | `GET /api/gestion/solicitudes/9/historial` | Coordinación | 200 | 200 | Aprobada |
 | PF-18 | Cerrar sin motivo | `POST /api/gestion/solicitudes/10/cerrar` | Coordinación | 422 | 422 | Aprobada |
 | PF-19 | Cerrar con motivo | `POST /api/gestion/solicitudes/10/cerrar` | Coordinación | 200 | 200 | Aprobada |
+| PF-20 | Radicar con una cédula ya registrada no modifica solicitudes anteriores | `POST /api/solicitudes` | Solicitante (sin cuenta) | 201 | 201 | Aprobada |
 | PF-10 | Consulta consolidada | `GET /api/reportes/resumen` | Coordinación | 200 | 200 | Aprobada |
 | PF-11 | Persistencia e integridad de relaciones | `SQL sobre la base de datos` | - | - | - | Aprobada |
 
@@ -47,10 +48,10 @@
 ```json
 {
   "nombre": "Camila Andrea Rosales",
-  "cedula": "1085999888",
+  "cedula": "1000000010",
   "direccion": "Carrera 22 # 14-30, Pasto",
-  "telefono": "3165554433",
-  "correo": "camila.rosales@correo.com",
+  "telefono": "3000000010",
+  "correo": "camila.rosales@ejemplo.com",
   "tipo_id": 3,
   "asunto": "Actualización de datos de contacto",
   "descripcion": "Solicito actualizar mi número de teléfono y correo en los registros de la organización."
@@ -61,7 +62,7 @@
 ```json
 {
   "mensaje": "Solicitud radicada correctamente. Guarde su número de radicado para consultarla.",
-  "radicado": "65106349",
+  "radicado": "44798389",
   "solicitante": "Camila A. R.",
   "tipo": "Atención administrativa",
   "asunto": "Actualización de datos de contacto",
@@ -70,12 +71,12 @@
   "estado_etiqueta": "Recibida",
   "respuesta": null,
   "motivo_cierre": null,
-  "fecha_creacion": "2026-11-16 10:30:53",
-  "fecha_actualizacion": "2026-11-16 10:30:53",
+  "fecha_creacion": "2026-11-16 13:42:38",
+  "fecha_actualizacion": "2026-11-16 13:42:38",
   "fecha_cierre": null,
   "historial": [
     {
-      "fecha": "2026-11-16 10:30:53",
+      "fecha": "2026-11-16 13:42:38",
       "accion": "REGISTRO",
       "accion_etiqueta": "Registro de la solicitud",
       "descripcion": "Solicitud radicada por el solicitante",
@@ -97,7 +98,7 @@
   "nombre": "Ca",
   "cedula": "12AB",
   "direccion": "Carrera 22 # 14-30, Pasto",
-  "telefono": "3165554433",
+  "telefono": "3000000010",
   "correo": "correo-sin-arroba",
   "tipo_id": 3,
   "asunto": "Actualización de datos de contacto",
@@ -142,10 +143,10 @@
 ```json
 {
   "nombre": "Camila Andrea Rosales",
-  "cedula": "1085999888",
+  "cedula": "1000000010",
   "direccion": "Carrera 22 # 14-30, Pasto",
-  "telefono": "3165554433",
-  "correo": "camila.rosales@correo.com",
+  "telefono": "3000000010",
+  "correo": "camila.rosales@ejemplo.com",
   "tipo_id": 99,
   "asunto": "Actualización de datos de contacto",
   "descripcion": "Solicito actualizar mi número de teléfono y correo en los registros de la organización."
@@ -162,13 +163,13 @@
 ### PF-03 — Consulta de solicitud existente
 
 - **Actor:** Solicitante (sin cuenta)
-- **Petición:** `GET /api/solicitudes/consulta/65106349`
+- **Petición:** `GET /api/solicitudes/consulta/44798389`
 - **Código esperado:** 200 · **Obtenido:** 200 · **Resultado:** ✅ Aprobada
 
 **Respuesta:**
 ```json
 {
-  "radicado": "65106349",
+  "radicado": "44798389",
   "solicitante": "Camila A. R.",
   "tipo": "Atención administrativa",
   "asunto": "Actualización de datos de contacto",
@@ -177,12 +178,12 @@
   "estado_etiqueta": "Recibida",
   "respuesta": null,
   "motivo_cierre": null,
-  "fecha_creacion": "2026-11-16 10:30:53",
-  "fecha_actualizacion": "2026-11-16 10:30:53",
+  "fecha_creacion": "2026-11-16 13:42:38",
+  "fecha_actualizacion": "2026-11-16 13:42:38",
   "fecha_cierre": null,
   "historial": [
     {
-      "fecha": "2026-11-16 10:30:53",
+      "fecha": "2026-11-16 13:42:38",
       "accion": "REGISTRO",
       "accion_etiqueta": "Registro de la solicitud",
       "descripcion": "Solicitud radicada por el solicitante",
@@ -269,7 +270,7 @@
 ```json
 {
   "id": 9,
-  "radicado": "65106349",
+  "radicado": "44798389",
   "estado": "ASIGNADA",
   "estado_etiqueta": "Asignada",
   "tipo_id": 3,
@@ -278,10 +279,10 @@
   "descripcion": "Solicito actualizar mi número de teléfono y correo en los registros de la organización.",
   "solicitante": {
     "nombre": "Camila Andrea Rosales",
-    "cedula": "1085999888",
+    "cedula": "1000000010",
     "direccion": "Carrera 22 # 14-30, Pasto",
-    "telefono": "3165554433",
-    "correo": "camila.rosales@correo.com"
+    "telefono": "3000000010",
+    "correo": "camila.rosales@ejemplo.com"
   },
   "encargado": {
     "id": 2,
@@ -289,13 +290,13 @@
   },
   "respuesta": null,
   "motivo_cierre": null,
-  "fecha_creacion": "2026-11-16 10:30:53",
-  "fecha_actualizacion": "2026-11-16 10:31:09",
+  "fecha_creacion": "2026-11-16 13:42:38",
+  "fecha_actualizacion": "2026-11-16 13:42:55",
   "fecha_cierre": null,
   "historial": [
     {
       "id": 23,
-      "fecha": "2026-11-16 10:30:53",
+      "fecha": "2026-11-16 13:42:38",
       "accion": "REGISTRO",
       "accion_etiqueta": "Registro de la solicitud",
       "descripcion": "Solicitud radicada por el solicitante",
@@ -305,7 +306,7 @@
     },
     {
       "id": 24,
-      "fecha": "2026-11-16 10:31:09",
+      "fecha": "2026-11-16 13:42:55",
       "accion": "ASIGNACION",
       "accion_etiqueta": "Asignación",
       "descripcion": "Asignada a Carlos Pérez",
@@ -407,7 +408,7 @@
 ```json
 {
   "id": 9,
-  "radicado": "65106349",
+  "radicado": "44798389",
   "estado": "EN_GESTION",
   "estado_etiqueta": "En gestión",
   "tipo_id": 3,
@@ -416,10 +417,10 @@
   "descripcion": "Solicito actualizar mi número de teléfono y correo en los registros de la organización.",
   "solicitante": {
     "nombre": "Camila Andrea Rosales",
-    "cedula": "1085999888",
+    "cedula": "1000000010",
     "direccion": "Carrera 22 # 14-30, Pasto",
-    "telefono": "3165554433",
-    "correo": "camila.rosales@correo.com"
+    "telefono": "3000000010",
+    "correo": "camila.rosales@ejemplo.com"
   },
   "encargado": {
     "id": 2,
@@ -427,13 +428,13 @@
   },
   "respuesta": null,
   "motivo_cierre": null,
-  "fecha_creacion": "2026-11-16 10:30:53",
-  "fecha_actualizacion": "2026-11-16 10:31:20",
+  "fecha_creacion": "2026-11-16 13:42:38",
+  "fecha_actualizacion": "2026-11-16 13:43:05",
   "fecha_cierre": null,
   "historial": [
     {
       "id": 23,
-      "fecha": "2026-11-16 10:30:53",
+      "fecha": "2026-11-16 13:42:38",
       "accion": "REGISTRO",
       "accion_etiqueta": "Registro de la solicitud",
       "descripcion": "Solicitud radicada por el solicitante",
@@ -443,7 +444,7 @@
     },
     {
       "id": 24,
-      "fecha": "2026-11-16 10:31:09",
+      "fecha": "2026-11-16 13:42:55",
       "accion": "ASIGNACION",
       "accion_etiqueta": "Asignación",
       "descripcion": "Asignada a Carlos Pérez",
@@ -453,10 +454,10 @@
     },
     {
       "id": 25,
-      "fecha": "2026-11-16 10:31:20",
+      "fecha": "2026-11-16 13:43:05",
       "accion": "EVALUACION",
       "accion_etiqueta": "Evaluación",
-      "de
+      "d
   ... (respuesta recortada)
 ```
 
@@ -477,7 +478,7 @@
 ```json
 {
   "id": 9,
-  "radicado": "65106349",
+  "radicado": "44798389",
   "estado": "EN_GESTION",
   "estado_etiqueta": "En gestión",
   "tipo_id": 3,
@@ -486,10 +487,10 @@
   "descripcion": "Solicito actualizar mi número de teléfono y correo en los registros de la organización.",
   "solicitante": {
     "nombre": "Camila Andrea Rosales",
-    "cedula": "1085999888",
+    "cedula": "1000000010",
     "direccion": "Carrera 22 # 14-30, Pasto",
-    "telefono": "3165554433",
-    "correo": "camila.rosales@correo.com"
+    "telefono": "3000000010",
+    "correo": "camila.rosales@ejemplo.com"
   },
   "encargado": {
     "id": 2,
@@ -497,13 +498,13 @@
   },
   "respuesta": null,
   "motivo_cierre": null,
-  "fecha_creacion": "2026-11-16 10:30:53",
-  "fecha_actualizacion": "2026-11-16 10:31:22",
+  "fecha_creacion": "2026-11-16 13:42:38",
+  "fecha_actualizacion": "2026-11-16 13:43:07",
   "fecha_cierre": null,
   "historial": [
     {
       "id": 23,
-      "fecha": "2026-11-16 10:30:53",
+      "fecha": "2026-11-16 13:42:38",
       "accion": "REGISTRO",
       "accion_etiqueta": "Registro de la solicitud",
       "descripcion": "Solicitud radicada por el solicitante",
@@ -513,7 +514,7 @@
     },
     {
       "id": 24,
-      "fecha": "2026-11-16 10:31:09",
+      "fecha": "2026-11-16 13:42:55",
       "accion": "ASIGNACION",
       "accion_etiqueta": "Asignación",
       "descripcion": "Asignada a Carlos Pérez",
@@ -523,23 +524,23 @@
     },
     {
       "id": 25,
-      "fecha": "2026-11-16 10:31:20",
+      "fecha": "2026-11-16 13:43:05",
       "accion": "EVALUACION",
       "accion_etiqueta": "Evaluación",
-      "de
+      "d
   ... (respuesta recortada)
 ```
 
 ### PF-07 — Consulta de estado durante la atención
 
 - **Actor:** Solicitante (sin cuenta)
-- **Petición:** `GET /api/solicitudes/consulta/65106349`
+- **Petición:** `GET /api/solicitudes/consulta/44798389`
 - **Código esperado:** 200 · **Obtenido:** 200 · **Resultado:** ✅ Aprobada
 
 **Respuesta:**
 ```json
 {
-  "radicado": "65106349",
+  "radicado": "44798389",
   "solicitante": "Camila A. R.",
   "tipo": "Atención administrativa",
   "asunto": "Actualización de datos de contacto",
@@ -548,33 +549,33 @@
   "estado_etiqueta": "En gestión",
   "respuesta": null,
   "motivo_cierre": null,
-  "fecha_creacion": "2026-11-16 10:30:53",
-  "fecha_actualizacion": "2026-11-16 10:31:22",
+  "fecha_creacion": "2026-11-16 13:42:38",
+  "fecha_actualizacion": "2026-11-16 13:43:07",
   "fecha_cierre": null,
   "historial": [
     {
-      "fecha": "2026-11-16 10:30:53",
+      "fecha": "2026-11-16 13:42:38",
       "accion": "REGISTRO",
       "accion_etiqueta": "Registro de la solicitud",
       "descripcion": "Solicitud radicada por el solicitante",
       "estado_nuevo": "RECIBIDA"
     },
     {
-      "fecha": "2026-11-16 10:31:09",
+      "fecha": "2026-11-16 13:42:55",
       "accion": "ASIGNACION",
       "accion_etiqueta": "Asignación",
       "descripcion": "Asignada a Carlos Pérez",
       "estado_nuevo": "ASIGNADA"
     },
     {
-      "fecha": "2026-11-16 10:31:20",
+      "fecha": "2026-11-16 13:43:05",
       "accion": "EVALUACION",
       "accion_etiqueta": "Evaluación",
       "descripcion": "Se revisó la solicitud: los datos nuevos están completos.",
       "estado_nuevo": "EN_GESTION"
     },
     {
-      "fecha": "2026-11-16 10:31:22",
+      "fecha": "2026-11-16 13:43:07",
       "accion": "SEGUIMIENTO",
       "accion_etiqueta": "Seguimiento",
       "descripcion": "Se actualizó el teléfono; falta confirmar el correo.",
@@ -627,7 +628,7 @@
 ```json
 {
   "id": 9,
-  "radicado": "65106349",
+  "radicado": "44798389",
   "estado": "FINALIZADA",
   "estado_etiqueta": "Finalizada",
   "tipo_id": 3,
@@ -636,10 +637,10 @@
   "descripcion": "Solicito actualizar mi número de teléfono y correo en los registros de la organización.",
   "solicitante": {
     "nombre": "Camila Andrea Rosales",
-    "cedula": "1085999888",
+    "cedula": "1000000010",
     "direccion": "Carrera 22 # 14-30, Pasto",
-    "telefono": "3165554433",
-    "correo": "camila.rosales@correo.com"
+    "telefono": "3000000010",
+    "correo": "camila.rosales@ejemplo.com"
   },
   "encargado": {
     "id": 2,
@@ -647,13 +648,13 @@
   },
   "respuesta": "Sus datos de contacto fueron actualizados correctamente en nuestros registros.",
   "motivo_cierre": null,
-  "fecha_creacion": "2026-11-16 10:30:53",
-  "fecha_actualizacion": "2026-11-16 10:31:28",
-  "fecha_cierre": "2026-11-16 10:31:28",
+  "fecha_creacion": "2026-11-16 13:42:38",
+  "fecha_actualizacion": "2026-11-16 13:43:13",
+  "fecha_cierre": "2026-11-16 13:43:13",
   "historial": [
     {
       "id": 23,
-      "fecha": "2026-11-16 10:30:53",
+      "fecha": "2026-11-16 13:42:38",
       "accion": "REGISTRO",
       "accion_etiqueta": "Registro de la solicitud",
       "descripcion": "Solicitud radicada por el solicitante",
@@ -663,7 +664,7 @@
     },
     {
       "id": 24,
-      "fecha": "2026-11-16 10:31:09",
+      "fecha": "2026-11-16 13:42:55",
       "accion": "ASIGNACION",
       "accion_etiqueta": "Asignación",
       "descripcion": "Asignada a Carlos Pérez",
@@ -673,20 +674,20 @@
     },
     {
       "id": 25,
-      "fecha": "2026-11
+      "fecha": "2026-1
   ... (respuesta recortada)
 ```
 
 ### PF-09b — El solicitante consulta la respuesta final
 
 - **Actor:** Solicitante (sin cuenta)
-- **Petición:** `GET /api/solicitudes/consulta/65106349`
+- **Petición:** `GET /api/solicitudes/consulta/44798389`
 - **Código esperado:** 200 · **Obtenido:** 200 · **Resultado:** ✅ Aprobada
 
 **Respuesta:**
 ```json
 {
-  "radicado": "65106349",
+  "radicado": "44798389",
   "solicitante": "Camila A. R.",
   "tipo": "Atención administrativa",
   "asunto": "Actualización de datos de contacto",
@@ -695,33 +696,33 @@
   "estado_etiqueta": "Finalizada",
   "respuesta": "Sus datos de contacto fueron actualizados correctamente en nuestros registros.",
   "motivo_cierre": null,
-  "fecha_creacion": "2026-11-16 10:30:53",
-  "fecha_actualizacion": "2026-11-16 10:31:28",
-  "fecha_cierre": "2026-11-16 10:31:28",
+  "fecha_creacion": "2026-11-16 13:42:38",
+  "fecha_actualizacion": "2026-11-16 13:43:13",
+  "fecha_cierre": "2026-11-16 13:43:13",
   "historial": [
     {
-      "fecha": "2026-11-16 10:30:53",
+      "fecha": "2026-11-16 13:42:38",
       "accion": "REGISTRO",
       "accion_etiqueta": "Registro de la solicitud",
       "descripcion": "Solicitud radicada por el solicitante",
       "estado_nuevo": "RECIBIDA"
     },
     {
-      "fecha": "2026-11-16 10:31:09",
+      "fecha": "2026-11-16 13:42:55",
       "accion": "ASIGNACION",
       "accion_etiqueta": "Asignación",
       "descripcion": "Asignada a Carlos Pérez",
       "estado_nuevo": "ASIGNADA"
     },
     {
-      "fecha": "2026-11-16 10:31:20",
+      "fecha": "2026-11-16 13:43:05",
       "accion": "EVALUACION",
       "accion_etiqueta": "Evaluación",
       "descripcion": "Se revisó la solicitud: los datos nuevos están completos.",
       "estado_nuevo": "EN_GESTION"
     },
     {
-      "fecha": "2026-11-16 10:31:22",
+      "fecha": "2026-11-16 13:43:07",
       "accion": "SEGUIMIENTO",
       "accion_etiqueta": "Seguimiento",
       "descripcion": "Se actualizó el teléfono; falta confirmar el correo.",
@@ -763,7 +764,7 @@
 [
   {
     "id": 23,
-    "fecha": "2026-11-16 10:30:53",
+    "fecha": "2026-11-16 13:42:38",
     "accion": "REGISTRO",
     "accion_etiqueta": "Registro de la solicitud",
     "descripcion": "Solicitud radicada por el solicitante",
@@ -773,7 +774,7 @@
   },
   {
     "id": 24,
-    "fecha": "2026-11-16 10:31:09",
+    "fecha": "2026-11-16 13:42:55",
     "accion": "ASIGNACION",
     "accion_etiqueta": "Asignación",
     "descripcion": "Asignada a Carlos Pérez",
@@ -783,7 +784,7 @@
   },
   {
     "id": 25,
-    "fecha": "2026-11-16 10:31:20",
+    "fecha": "2026-11-16 13:43:05",
     "accion": "EVALUACION",
     "accion_etiqueta": "Evaluación",
     "descripcion": "Se revisó la solicitud: los datos nuevos están completos.",
@@ -793,7 +794,7 @@
   },
   {
     "id": 26,
-    "fecha": "2026-11-16 10:31:22",
+    "fecha": "2026-11-16 13:43:07",
     "accion": "SEGUIMIENTO",
     "accion_etiqueta": "Seguimiento",
     "descripcion": "Se actualizó el teléfono; falta confirmar el correo.",
@@ -803,7 +804,7 @@
   },
   {
     "id": 27,
-    "fecha": "2026-11-16 10:31:28",
+    "fecha": "2026-11-16 13:43:13",
     "accion": "RESPUESTA",
     "accion_etiqueta": "Respuesta y finalización",
     "descripcion": "Sus datos de contacto fueron actualizados correctamente en nuestros registros.",
@@ -856,7 +857,7 @@
 ```json
 {
   "id": 10,
-  "radicado": "44732327",
+  "radicado": "29694209",
   "estado": "CERRADA",
   "estado_etiqueta": "Cerrada",
   "tipo_id": 3,
@@ -865,21 +866,21 @@
   "descripcion": "Solicito actualizar mi número de teléfono y correo en los registros de la organización.",
   "solicitante": {
     "nombre": "Camila Andrea Rosales",
-    "cedula": "1085999888",
+    "cedula": "1000000010",
     "direccion": "Carrera 22 # 14-30, Pasto",
-    "telefono": "3165554433",
-    "correo": "camila.rosales@correo.com"
+    "telefono": "3000000010",
+    "correo": "camila.rosales@ejemplo.com"
   },
   "encargado": null,
   "respuesta": null,
   "motivo_cierre": "El solicitante desistió de la solicitud por vía telefónica.",
-  "fecha_creacion": "2026-11-16 10:31:36",
-  "fecha_actualizacion": "2026-11-16 10:31:40",
-  "fecha_cierre": "2026-11-16 10:31:40",
+  "fecha_creacion": "2026-11-16 13:43:22",
+  "fecha_actualizacion": "2026-11-16 13:43:26",
+  "fecha_cierre": "2026-11-16 13:43:26",
   "historial": [
     {
       "id": 28,
-      "fecha": "2026-11-16 10:31:36",
+      "fecha": "2026-11-16 13:43:22",
       "accion": "REGISTRO",
       "accion_etiqueta": "Registro de la solicitud",
       "descripcion": "Solicitud radicada por el solicitante",
@@ -889,7 +890,7 @@
     },
     {
       "id": 29,
-      "fecha": "2026-11-16 10:31:40",
+      "fecha": "2026-11-16 13:43:26",
       "accion": "CIERRE",
       "accion_etiqueta": "Cierre",
       "descripcion": "El solicitante desistió de la solicitud por vía telefónica.",
@@ -901,6 +902,56 @@
 }
 ```
 
+### PF-20 — Radicar con una cédula ya registrada no modifica solicitudes anteriores
+
+- **Actor:** Solicitante (sin cuenta)
+- **Petición:** `POST /api/solicitudes`
+- **Código esperado:** 201 · **Obtenido:** 201 · **Resultado:** ✅ Aprobada
+
+**Cuerpo enviado:**
+```json
+{
+  "nombre": "Persona Diferente",
+  "cedula": "1000000001",
+  "direccion": "Carrera 22 # 14-30, Pasto",
+  "telefono": "3000000099",
+  "correo": "camila.rosales@ejemplo.com",
+  "tipo_id": 3,
+  "asunto": "Radicación con cédula repetida",
+  "descripcion": "Solicito actualizar mi número de teléfono y correo en los registros de la organización."
+}
+```
+
+**Respuesta:**
+```json
+{
+  "mensaje": "Solicitud radicada correctamente. Guarde su número de radicado para consultarla.",
+  "radicado": "68800762",
+  "solicitante": "Persona D.",
+  "tipo": "Atención administrativa",
+  "asunto": "Radicación con cédula repetida",
+  "descripcion": "Solicito actualizar mi número de teléfono y correo en los registros de la organización.",
+  "estado": "RECIBIDA",
+  "estado_etiqueta": "Recibida",
+  "respuesta": null,
+  "motivo_cierre": null,
+  "fecha_creacion": "2026-11-16 13:43:28",
+  "fecha_actualizacion": "2026-11-16 13:43:28",
+  "fecha_cierre": null,
+  "historial": [
+    {
+      "fecha": "2026-11-16 13:43:28",
+      "accion": "REGISTRO",
+      "accion_etiqueta": "Registro de la solicitud",
+      "descripcion": "Solicitud radicada por el solicitante",
+      "estado_nuevo": "RECIBIDA"
+    }
+  ]
+}
+```
+
+> Verificación en base de datos: datos del solicitante del radicado 51842093 antes = ('María Fernanda López', '3000000001'), después = ('María Fernanda López', '3000000001') → sin cambios ✅
+
 ### PF-10 — Consulta consolidada
 
 - **Actor:** Coordinación
@@ -910,9 +961,9 @@
 **Respuesta:**
 ```json
 {
-  "total": 10,
-  "pendientes": 5,
-  "sin_asignar": 2,
+  "total": 11,
+  "pendientes": 6,
+  "sin_asignar": 3,
   "finalizadas": 3,
   "cerradas": 2,
   "tiempo_promedio_atencion_horas": 22.7,
@@ -920,7 +971,7 @@
     {
       "estado": "RECIBIDA",
       "etiqueta": "Recibida",
-      "cantidad": 2
+      "cantidad": 3
     },
     {
       "estado": "ASIGNADA",
@@ -954,7 +1005,7 @@
     },
     {
       "tipo": "Atención administrativa",
-      "cantidad": 4
+      "cantidad": 5
     },
     {
       "tipo": "Requerimiento de servicio",
