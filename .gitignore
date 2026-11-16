@@ -1,0 +1,17 @@
+# Entorno virtual y caché de Python
+.venv/
+venv/
+__pycache__/
+*.pyc
+
+# Variables de entorno locales (no subir secretos)
+.env
+
+# Base de datos local (se genera con: python -m app.seed --reset --demo)
+backend/data/
+
+# Sistema / editor
+.vscode/
+.idea/
+Thumbs.db
+.DS_Store
