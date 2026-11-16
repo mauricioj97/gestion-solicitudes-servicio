@@ -1,7 +1,10 @@
 // Panel del personal: listado, detalle, acciones según rol y resumen consolidado.
 
 const usuario = API.usuario();
-if (!API.token() || !usuario) location.href = "login.html";
+if (!API.token() || !usuario) {
+  location.replace("login.html");
+  throw new Error("Sin sesión: redirigiendo al ingreso"); // detiene el resto del script
+}
 
 const esCoordinador = usuario?.rol === "COORDINADOR";
 const alerta = document.getElementById("alerta");
@@ -97,14 +100,17 @@ async function formularioAcciones(s) {
   let html = "";
   if (esCoordinador) {
     if (["RECIBIDA", "ASIGNADA"].includes(s.estado)) {
-      const encargados = await pedir("GET", "/api/usuarios/encargados");
+      // Al reasignar no se ofrece el encargado actual (asignarle la misma persona no cambia nada).
+      const encargados = (await pedir("GET", "/api/usuarios/encargados")).filter((e) => e.id !== s.encargado?.id);
       html += `<div class="accion-bloque">
           <h4>${s.encargado ? "Reasignar" : "Asignar"} encargado</h4>
           <p class="ayuda">La solicitud pasará a estado Asignada.</p>
-          <select id="encargado">${encargados
-            .map((e) => `<option value="${e.id}" ${s.encargado?.id === e.id ? "selected" : ""}>${esc(e.nombre)} (${e.solicitudes_activas} activas)</option>`)
-            .join("")}</select>
-          <div class="acciones-form"><button class="boton" data-accion="asignar">Asignar</button></div>
+          ${encargados.length
+            ? `<select id="encargado">${encargados
+                .map((e) => `<option value="${e.id}">${esc(e.nombre)} (${e.solicitudes_activas} activas)</option>`)
+                .join("")}</select>
+          <div class="acciones-form"><button class="boton" data-accion="asignar">${s.encargado ? "Reasignar" : "Asignar"}</button></div>`
+            : `<p class="ayuda">No hay otros encargados disponibles.</p>`}
         </div>`;
     }
   } else {
