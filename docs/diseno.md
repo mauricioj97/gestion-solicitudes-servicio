@@ -107,7 +107,7 @@ erDiagram
 
     SOLICITANTES {
         int id PK
-        text cedula UK "6 a 10 dígitos"
+        text cedula "6 a 10 dígitos (indexada)"
         text nombre
         text direccion
         text telefono
@@ -162,7 +162,7 @@ erDiagram
 
 | Tabla | Para qué sirve | Restricciones clave |
 |---|---|---|
-| `solicitantes` | Datos de contacto de quien solicita. Una persona puede tener varias solicitudes. | `cedula UNIQUE` |
+| `solicitantes` | Datos de contacto de quien solicita, guardados con cada radicación tal como se escribieron (RN-13). Así, una radicación nueva con la misma cédula nunca altera los datos de solicitudes anteriores. | índice por `cedula` (no única, a propósito) |
 | `tipos_servicio` | Lista fija de tipos de servicio. | `nombre UNIQUE` |
 | `solicitudes` | La solicitud, su estado actual, su encargado y su resultado. | `radicado UNIQUE`, `estado CHECK`, FK a solicitante, tipo y usuario |
 | `acciones` | **Historial (trazabilidad)**: una fila por cada acción realizada sobre una solicitud. Nunca se edita ni se borra. | FK a solicitud (obligatoria) y a usuario, `tipo_accion CHECK` |
@@ -272,7 +272,62 @@ sequenceDiagram
 | Panel – detalle | `panel.html` | Personal | Datos completos, historial y **solo las acciones que el rol y el estado permiten**. | `GET /api/gestion/solicitudes/{id}`, `POST .../asignar`, `.../evaluar`, `.../seguimiento`, `.../finalizar`, `.../cerrar`, `GET /api/usuarios/encargados` |
 | Panel – resumen | `panel.html` | Coordinación | Indicadores, gráficas de barras por estado y por tipo, y carga por encargado. | `GET /api/reportes/resumen` |
 
-Las capturas de cada pantalla están en [`evidencias/capturas/`](../evidencias/capturas/).
+### Prototipos (bocetos de baja fidelidad)
+
+Bocetos hechos antes de construir las pantallas. Las pantallas finales están en [`evidencias/capturas/`](../evidencias/capturas/).
+
+**Radicar** (solicitante, sin cuenta)
+
+```text
+┌──────────────────────────────────────────────────────────┐
+│ 📋 Solicitudes de Servicio     Inicio Radicar Consultar Personal │
+├──────────────────────────────────────────────────────────┤
+│ Radicar una solicitud                                    │
+│ Datos del solicitante                                    │
+│ [Nombre completo        ] [Cédula          ]             │
+│ [Teléfono               ] [Correo          ]             │
+│ [Dirección                                  ]            │
+│ Solicitud                                                │
+│ [Tipo de servicio ▼]  [Asunto                ]           │
+│ [Descripción                                 ]           │
+│ ⚠ Mensaje en rojo bajo cada campo inválido               │
+│                                         [ Radicar ]      │
+└──────────────────────────────────────────────────────────┘
+   Al enviar →  "Su número de radicado es: 12345678"
+                [Consultar esta solicitud] [Radicar otra]
+```
+
+**Consultar** (solicitante, solo con el número)
+
+```text
+┌──────────────────────────────────────────────────────────┐
+│ Consultar solicitud   [ número de radicado ] [Consultar] │
+├──────────────────────────────────────────────────────────┤
+│ Radicado 12345678 · Trámite · Solicitante: Valentina O.  │
+│ Recibida ── Asignada ── En gestión ── ● Finalizada       │
+│ ┌ Respuesta ───────────────────────────────────────────┐ │
+│ │ Texto de la respuesta del encargado                  │ │
+│ └──────────────────────────────────────────────────────┘ │
+│ Historial: fecha · acción · estado anterior → nuevo      │
+└──────────────────────────────────────────────────────────┘
+```
+
+**Panel del personal** (coordinación / encargado)
+
+```text
+┌──────────────────────────────────────────────────────────┐
+│ Laura Gómez (Coordinación)                 [Cerrar sesión]│
+│ [Solicitudes] [Resumen consolidado]   ← resumen: solo coord.│
+├──────────────────────────────────────────────────────────┤
+│ Filtro: [Todos los estados ▼]                            │
+│ Radicado │ Asunto │ Tipo │ Estado │ Encargado │ [Ver]    │
+├──────────────────────────────────────────────────────────┤
+│ Detalle: datos completos del solicitante + historial     │
+│ Acciones (solo las que permiten el rol y el estado):     │
+│  Coordinación: [Asignar a ▼] [Cerrar con motivo]         │
+│  Encargado:    [Evaluar] [Seguimiento] [Responder] [Cerrar]│
+└──────────────────────────────────────────────────────────┘
+```
 
 ---
 
@@ -430,6 +485,7 @@ Respuesta `200 OK`:
 | RN-10 Sin eliminación | No existe endpoint `DELETE` |
 | RN-11 Visibilidad por rol | `routers/gestion.py` → `listar()` filtra por `encargado_id` |
 | RN-12 Privacidad en consulta pública | `servicios.vista_publica()` y `enmascarar_nombre()` |
+| RN-13 Datos del solicitante inmutables | `routers/publico.py` → `radicar()` siempre inserta un registro nuevo de solicitante; no existe ningún `UPDATE` sobre `solicitantes` |
 
 ---
 
@@ -445,3 +501,4 @@ Respuesta `200 OK`:
 | D-06 | El frontend lo sirve el mismo servidor. | Una sola instrucción para ejecutar todo, sin configurar CORS. | RNF-07 |
 | D-07 | Mensajes de error propios en español; los errores 500 no muestran detalles internos. | Claridad para el usuario y no se revela información sensible. | RNF-04 |
 | D-08 | Validación en el navegador **y** en el servidor. | La del navegador da comodidad; la del servidor protege los datos aunque se use la API directamente. | RN-01 |
+| D-09 | Cada radicación guarda su propia copia de los datos del solicitante (la cédula no es única). | Como la radicación es pública y sin cuenta, si se actualizaran los datos por cédula, cualquiera podría cambiar el nombre o el teléfono de otra persona escribiendo su cédula. | RN-13, RNF-05 |
