@@ -31,7 +31,7 @@ La organización recibe solicitudes por correo, teléfono y WhatsApp. La informa
 | **Encargado (personal de atención)** | Evalúa, hace seguimiento, responde o cierra las solicitudes que le asignan. | Sí |
 | **Coordinación** | Asigna solicitudes, puede cerrarlas con motivo y consulta el resumen consolidado. | Sí |
 
-### Alcance aprobado
+### Alcance acordado
 Recepción → asignación → evaluación → gestión con seguimiento → respuesta y finalización (o cierre con motivo). Incluye historial de acciones, consulta pública por radicado, control de acceso por rol y resumen consolidado.
 
 **Restricciones (fuera del alcance):** facturación, pagos, WhatsApp, envío real de correos, integraciones externas, administración de usuarios desde la interfaz y eliminación de solicitudes.
@@ -47,7 +47,7 @@ Detalle completo: [docs/requisitos.md](docs/requisitos.md)
   1. Flujo: el cliente solicita, el encargado la revisa y la responde. Se puede cerrar, **indicando el motivo**.
   2. El solicitante consulta **solo con un número**, sin cuenta. **La coordinación asigna.**
   3. Tipos de servicio del enunciado. Datos obligatorios: **nombre, cédula, dirección, teléfono y correo**.
-- **Requisitos:** 15 funcionales (RF-01 a RF-15), 8 no funcionales (RNF-01 a RNF-08) y 12 reglas de negocio (RN-01 a RN-12).
+- **Requisitos:** 15 funcionales (RF-01 a RF-15), 8 no funcionales (RNF-01 a RNF-08) y 13 reglas de negocio (RN-01 a RN-13).
 - **Historias de usuario:** HU-01 a HU-07, con criterios de aceptación verificables.
 
 El registro de la entrevista, los supuestos y la priorización están en [docs/requisitos.md](docs/requisitos.md).
@@ -91,7 +91,7 @@ stateDiagram-v2
 ## 5. Configuración del entorno
 
 ### Requisitos
-- **Python 3.12 o superior** ([python.org](https://www.python.org/downloads/))
+- **Python 3.10 o superior** ([python.org](https://www.python.org/downloads/)). Probado con Python 3.14 en Windows 11.
 - **Git**
 - Un navegador web
 
@@ -104,7 +104,7 @@ python -m venv .venv
 ```
 
 Activar el entorno virtual:
-- Windows (PowerShell): `.venv\Scripts\Activate.ps1`
+- Windows (PowerShell): `Set-ExecutionPolicy -Scope Process Bypass` y luego `.venv\Scripts\Activate.ps1` (el primer comando permite ejecutar el script de activación solo en esa ventana)
 - Windows (CMD): `.venv\Scripts\activate.bat`
 - Linux / macOS: `source .venv/bin/activate`
 
@@ -113,7 +113,7 @@ pip install -r backend/requirements.txt
 ```
 
 ### Variables de entorno (opcional)
-Copiar `backend/.env.example` como `backend/.env` si se quiere cambiar la ruta de la base de datos (`DB_PATH`) o la duración de la sesión (`SESSION_HOURS`). Sin ese archivo se usan los valores por defecto. **No contiene secretos.**
+El archivo está en `backend/` (y no en la raíz) porque el servidor se ejecuta desde esa carpeta y lo lee de ahí. Copiar `backend/.env.example` como `backend/.env` si se quiere cambiar la ruta de la base de datos (`DB_PATH`) o la duración de la sesión (`SESSION_HOURS`). Sin ese archivo se usan los valores por defecto. **No contiene secretos.**
 
 ### Preparar la base de datos y ejecutar
 
@@ -171,8 +171,8 @@ Radicados de ejemplo para consultar: `51842093` (finalizada), `64250187` (cerrad
 POST /api/solicitudes
 Content-Type: application/json
 
-{ "nombre": "María Fernanda López", "cedula": "1085123456", "direccion": "Calle 18 # 25-40, Pasto",
-  "telefono": "3104567890", "correo": "maria.lopez@correo.com", "tipo_id": 1,
+{ "nombre": "María Fernanda López", "cedula": "1000000001", "direccion": "Calle 18 # 25-40, Pasto",
+  "telefono": "3000000001", "correo": "maria.lopez@ejemplo.com", "tipo_id": 1,
   "asunto": "Certificado de residencia", "descripcion": "Solicito un certificado de residencia para mi trabajo." }
 ```
 
@@ -190,26 +190,28 @@ Especificación completa con formatos y errores: [docs/diseno.md, sección 9](do
 
 ## 7. Pruebas de API e integración y evidencias
 
-**25 pruebas funcionales ejecutadas, 25 aprobadas.** Incluyen las 12 pruebas mínimas del enunciado y 13 adicionales sobre reglas de negocio y seguridad.
+**27 pruebas funcionales ejecutadas, 27 aprobadas.** Incluyen las 12 pruebas mínimas del enunciado y 15 adicionales sobre reglas de negocio y seguridad.
 
-| # | Prueba mínima | Resultado | Código |
-|---|---|---|---|
-| 1 | Registro válido | ✅ | 201 |
-| 2 | Registro con datos inválidos (no se guarda) | ✅ | 422 |
-| 3 | Consulta de solicitud existente | ✅ | 200 |
-| 4 | Consulta de solicitud inexistente | ✅ | 404 |
-| 5 | Gestión por actor autorizado | ✅ | 200 |
-| 6 | Gestión por actor no autorizado | ✅ | 403 |
-| 7 | Consulta de estado coherente | ✅ | 200 |
-| 8 | Historial de atención | ✅ | 200 |
-| 9 | Finalización y consulta del resultado | ✅ | 200 |
-| 10 | Consulta consolidada | ✅ | 200 |
-| 11 | Persistencia e integridad de relaciones | ✅ | — |
-| 12 | Integración interfaz–API–base de datos | ✅ | — |
+| # | Prueba mínima | ID | Requisitos asociados | Resultado | Código |
+|---|---|---|---|---|---|
+| 1 | Registro válido | PF-01 | RF-01, RN-01, RN-02 · CA-01 | ✅ | 201 |
+| 2 | Registro con datos inválidos (no se guarda) | PF-02 | RF-02, RN-01 · CA-01 | ✅ | 422 |
+| 3 | Consulta de solicitud existente | PF-03 | RF-03, RN-12 · CA-03 | ✅ | 200 |
+| 4 | Consulta de solicitud inexistente | PF-04 | RF-03, RNF-04 | ✅ | 404 |
+| 5 | Gestión por actor autorizado | PF-05 | RF-07, RN-03, RN-09 · CA-02 | ✅ | 200 |
+| 6 | Gestión por actor no autorizado | PF-06 | RN-03 · CA-02 | ✅ | 403 |
+| 7 | Consulta de estado coherente | PF-07 | RF-03, RN-05 · CA-03 | ✅ | 200 |
+| 8 | Historial de atención | PF-08 | RF-12, RF-13, RN-09 · CA-04 | ✅ | 200 |
+| 9 | Finalización y consulta del resultado | PF-09 | RF-10, RN-06 · CA-05 | ✅ | 200 |
+| 10 | Consulta consolidada | PF-10 | RF-14 · CA-06 | ✅ | 200 |
+| 11 | Persistencia e integridad de relaciones | PF-11 | RNF-05, RN-09 | ✅ | — |
+| 12 | Integración interfaz–API–base de datos | PF-12 | RNF-01, RN-11 · CA-01 a CA-06 | ✅ | — |
+
+Las 15 pruebas adicionales (401, 403, 409, 422 y la regla RN-13) están en la tabla de [docs/pruebas.md](docs/pruebas.md#2-resumen-de-resultados).
 
 **Cómo reproducirlas:**
 1. Manualmente en Swagger (`/docs`), siguiendo los pasos de [docs/pruebas.md](docs/pruebas.md).
-2. Con el script de apoyo: con el servidor encendido, ejecutar `python pruebas/ejecutar_pruebas.py` desde la raíz del proyecto.
+2. Con el script de apoyo: con el servidor encendido y la base recién cargada (`--reset --demo`), ejecutar `python pruebas/ejecutar_pruebas.py` desde la raíz del proyecto. Repite las 26 pruebas de API (PF-12 se hace en el navegador).
 
 **Evidencias:**
 - [evidencias/resultados_pruebas_api.md](evidencias/resultados_pruebas_api.md): cada petición y su respuesta.
@@ -248,6 +250,7 @@ Se cumplen las seis condiciones obligatorias. CA-01 a CA-06 se demuestran con un
 | El solicitante consulta sin cuenta: cualquiera con un número podría ver una solicitud ajena. | Radicado aleatorio de 8 dígitos (no consecutivo) y vista pública sin cédula, dirección, teléfono ni correo. |
 | Evitar estados incoherentes (por ejemplo, finalizar sin evaluar). | Máquina de estados centralizada que responde 409 ante transiciones no permitidas. |
 | Que el historial y el estado no quedaran desincronizados. | Cambio de estado y registro de la acción en una sola transacción. |
+| En la revisión se detectó que radicar con una cédula ya registrada sobrescribía los datos de otra persona. | Cada radicación guarda su propia copia de los datos del solicitante (RN-13), verificado con la prueba PF-20. |
 | Los mensajes de validación del framework salían en inglés. | Manejadores de error propios que responden en español e indican el campo con error. |
 
 ### Limitaciones
