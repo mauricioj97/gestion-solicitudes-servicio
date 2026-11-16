@@ -174,5 +174,12 @@ def aplicar_accion(db, solicitud, usuario, accion, descripcion, **campos) -> Non
         cambios["fecha_cierre"] = momento
     asignaciones = ", ".join(f"{k} = ?" for k in cambios)
     with db:  # transacción: o se guarda todo o no se guarda nada
-        db.execute(f"UPDATE solicitudes SET {asignaciones} WHERE id = ?", (*cambios.values(), solicitud["id"]))
+        # "AND estado = ?" evita que dos acciones simultáneas (p. ej. doble clic) cambien el
+        # mismo estado: si otra petición ya lo cambió, no se actualiza nada y se responde 409.
+        cursor = db.execute(
+            f"UPDATE solicitudes SET {asignaciones} WHERE id = ? AND estado = ?",
+            (*cambios.values(), solicitud["id"], solicitud["estado"]),
+        )
+        if cursor.rowcount == 0:
+            raise HTTPException(409, "La solicitud cambió de estado mientras se procesaba la acción. Actualice e intente de nuevo")
         registrar_accion(db, solicitud["id"], usuario["id"], accion, descripcion, solicitud["estado"], estado_nuevo, momento)

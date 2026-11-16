@@ -21,18 +21,13 @@ def radicar(datos: SolicitudCrear, db: sqlite3.Connection = Depends(get_db)):
         raise HTTPException(422, "El tipo de servicio indicado no existe")
     momento = ahora()
     with db:  # transacción: solicitante + solicitud + historial
-        existente = db.execute("SELECT id FROM solicitantes WHERE cedula = ?", (datos.cedula,)).fetchone()
-        if existente:
-            solicitante_id = existente["id"]
-            db.execute(
-                "UPDATE solicitantes SET nombre = ?, direccion = ?, telefono = ?, correo = ? WHERE id = ?",
-                (datos.nombre, datos.direccion, datos.telefono, datos.correo, solicitante_id),
-            )
-        else:
-            solicitante_id = db.execute(
-                "INSERT INTO solicitantes (cedula, nombre, direccion, telefono, correo) VALUES (?, ?, ?, ?, ?)",
-                (datos.cedula, datos.nombre, datos.direccion, datos.telefono, datos.correo),
-            ).lastrowid
+        # RN-13: siempre se inserta un registro nuevo. Nunca se actualizan los datos de una
+        # cédula existente, porque la radicación es pública y cualquiera podría escribir la
+        # cédula de otra persona y cambiarle el nombre o el teléfono.
+        solicitante_id = db.execute(
+            "INSERT INTO solicitantes (cedula, nombre, direccion, telefono, correo) VALUES (?, ?, ?, ?, ?)",
+            (datos.cedula, datos.nombre, datos.direccion, datos.telefono, datos.correo),
+        ).lastrowid
         radicado = generar_radicado(db)
         solicitud_id = db.execute(
             """INSERT INTO solicitudes (radicado, solicitante_id, tipo_id, asunto, descripcion, estado,

@@ -27,10 +27,12 @@ CREATE TABLE IF NOT EXISTS tipos_servicio (
     nombre TEXT    NOT NULL UNIQUE
 );
 
--- Personas que presentan solicitudes (no inician sesión)
+-- Datos de quien presenta cada solicitud (no inicia sesión).
+-- La cédula NO es única: cada radicación guarda su propia copia de los datos (RN-13),
+-- así una radicación nueva nunca modifica los datos de solicitudes anteriores.
 CREATE TABLE IF NOT EXISTS solicitantes (
     id        INTEGER PRIMARY KEY AUTOINCREMENT,
-    cedula    TEXT    NOT NULL UNIQUE,
+    cedula    TEXT    NOT NULL,
     nombre    TEXT    NOT NULL,
     direccion TEXT    NOT NULL,
     telefono  TEXT    NOT NULL,
@@ -71,3 +73,4 @@ CREATE TABLE IF NOT EXISTS acciones (
 CREATE INDEX IF NOT EXISTS idx_solicitudes_estado    ON solicitudes (estado);
 CREATE INDEX IF NOT EXISTS idx_solicitudes_encargado ON solicitudes (encargado_id);
 CREATE INDEX IF NOT EXISTS idx_acciones_solicitud    ON acciones (solicitud_id);
+CREATE INDEX IF NOT EXISTS idx_solicitantes_cedula   ON solicitantes (cedula);

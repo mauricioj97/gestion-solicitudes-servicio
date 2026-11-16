@@ -38,11 +38,11 @@ class SolicitudCrear(BaseModel):
     model_config = ConfigDict(
         json_schema_extra={
             "example": {
-                "nombre": "María Fernanda López",
-                "cedula": "1085123456",
+                "nombre": "Valentina Ortega Ruiz",
+                "cedula": "1000000099",
                 "direccion": "Calle 18 # 25-40, Pasto",
-                "telefono": "3104567890",
-                "correo": "maria.lopez@correo.com",
+                "telefono": "3000000099",
+                "correo": "valentina.ortega@ejemplo.com",
                 "tipo_id": 1,
                 "asunto": "Certificado de residencia",
                 "descripcion": "Solicito un certificado de residencia para presentar en mi trabajo.",
