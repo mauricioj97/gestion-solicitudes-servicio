@@ -106,6 +106,7 @@ flowchart LR
 | RN-10 | Las solicitudes no se eliminan: se conserva la trazabilidad completa. |
 | RN-11 | El personal de atención solo ve las solicitudes que tiene asignadas; la coordinación ve todas. |
 | RN-12 | La consulta pública por radicado muestra solo información no sensible del solicitante. |
+| RN-13 | Los datos del solicitante se guardan con cada radicación tal como los escribió y no se modifican después: una radicación nueva (aunque repita la cédula) nunca altera los datos de solicitudes anteriores. |
 
 ---
 
@@ -207,7 +208,10 @@ flowchart LR
 
 ---
 
-## 10. Alcance aprobado
+## 10. Alcance acordado
+
+Definido a partir de las respuestas del cliente en la entrevista (10-11-2026) y presentado al docente con la entrega para su revisión.
+
 
 **Incluido:** radicación pública, consulta por radicado, inicio de sesión del personal, asignación, evaluación, seguimiento, respuesta, cierre con motivo, historial de acciones, resumen consolidado y control de acceso por rol.
 
