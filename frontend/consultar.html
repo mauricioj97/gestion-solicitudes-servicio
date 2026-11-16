@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Consultar solicitud</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header class="barra">
+    <div class="contenido">
+      <a class="marca" href="index.html">📋 Solicitudes de Servicio</a>
+      <nav class="menu">
+        <a href="index.html">Inicio</a>
+        <a href="radicar.html">Radicar</a>
+        <a href="consultar.html" class="activo">Consultar</a>
+        <a href="login.html">Personal</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="angosto">
+    <form id="buscar" class="tarjeta">
+      <h1>Consultar mi solicitud</h1>
+      <p class="subtitulo">Ingrese el número de radicado que recibió al presentar su solicitud.</p>
+      <div class="campo">
+        <label for="radicado">Número de radicado</label>
+        <input id="radicado" inputmode="numeric" maxlength="8" placeholder="Ejemplo: 51842093">
+      </div>
+      <div class="acciones-form"><button class="boton" type="submit">Consultar</button></div>
+    </form>
+
+    <div id="alerta" class="oculto"></div>
+    <div id="resultado"></div>
+  </main>
+
+  <script src="js/api.js"></script>
+  <script src="js/consultar.js"></script>
+</body>
+</html>

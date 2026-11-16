@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Radicar solicitud</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header class="barra">
+    <div class="contenido">
+      <a class="marca" href="index.html">📋 Solicitudes de Servicio</a>
+      <nav class="menu">
+        <a href="index.html">Inicio</a>
+        <a href="radicar.html" class="activo">Radicar</a>
+        <a href="consultar.html">Consultar</a>
+        <a href="login.html">Personal</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="angosto">
+    <div id="exito" class="oculto"></div>
+
+    <form id="formulario" class="tarjeta" novalidate>
+      <h1>Radicar una solicitud</h1>
+      <p class="subtitulo">Todos los campos son obligatorios.</p>
+      <div id="alerta" class="oculto"></div>
+
+      <h3>Datos del solicitante</h3>
+      <div class="grilla">
+        <div class="campo completo"><label for="nombre">Nombre completo</label>
+          <input id="nombre" name="nombre" maxlength="100" autocomplete="name"><span class="error-campo"></span></div>
+        <div class="campo"><label for="cedula">Cédula</label>
+          <input id="cedula" name="cedula" inputmode="numeric" maxlength="10"><span class="error-campo"></span></div>
+        <div class="campo"><label for="telefono">Teléfono</label>
+          <input id="telefono" name="telefono" inputmode="numeric" maxlength="10" autocomplete="tel"><span class="error-campo"></span></div>
+        <div class="campo"><label for="correo">Correo electrónico</label>
+          <input id="correo" name="correo" type="email" maxlength="120" autocomplete="email"><span class="error-campo"></span></div>
+        <div class="campo"><label for="direccion">Dirección</label>
+          <input id="direccion" name="direccion" maxlength="150" autocomplete="street-address"><span class="error-campo"></span></div>
+      </div>
+
+      <h3 style="margin-top:1.2rem">Datos de la solicitud</h3>
+      <div class="grilla">
+        <div class="campo"><label for="tipo_id">Tipo de servicio</label>
+          <select id="tipo_id" name="tipo_id"><option value="">Seleccione…</option></select><span class="error-campo"></span></div>
+        <div class="campo"><label for="asunto">Asunto</label>
+          <input id="asunto" name="asunto" maxlength="120"><span class="error-campo"></span></div>
+        <div class="campo completo"><label for="descripcion">Descripción de la necesidad</label>
+          <textarea id="descripcion" name="descripcion" maxlength="2000"></textarea><span class="error-campo"></span></div>
+      </div>
+
+      <div class="acciones-form">
+        <button class="boton" type="submit" id="enviar">Radicar solicitud</button>
+      </div>
+    </form>
+  </main>
+
+  <script src="js/api.js"></script>
+  <script src="js/radicar.js"></script>
+</body>
+</html>
