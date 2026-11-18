@@ -234,9 +234,10 @@ Las 15 pruebas adicionales (401, 403, 409, 422 y la regla RN-13) están en la ta
 | `feature/interfaz-web` | Pantallas de radicación, consulta, ingreso y panel | [#4](https://github.com/mauricioj97/gestion-solicitudes-servicio/pull/4) |
 | `test/pruebas-funcionales` | Plan de pruebas, script de apoyo y evidencias | [#5](https://github.com/mauricioj97/gestion-solicitudes-servicio/pull/5) |
 | `docs/readme-trazabilidad` | Informe final y matriz de trazabilidad | [#6](https://github.com/mauricioj97/gestion-solicitudes-servicio/pull/6) |
+| `feature/comprobante-radicado` | Botones para copiar el radicado e imprimir el comprobante | [#7](https://github.com/mauricioj97/gestion-solicitudes-servicio/pull/7) |
+| `docs/capturas-evidencias` | Capturas de las pruebas mínimas y aportes | [#8](https://github.com/mauricioj97/gestion-solicitudes-servicio/pull/8) |
 
-**Aportes:** Mauricio Jojoa, autor de todos los commits y pull requests ([ver historial](https://github.com/mauricioj97/gestion-solicitudes-servicio/commits/main)).
-
+**Aportes:** Mauricio Jojoa, autor de todos los commits. Revisé y uní los PR #1 a #6, desarrollé la mejora del comprobante del radicado ([#7](https://github.com/mauricioj97/gestion-solicitudes-servicio/pull/7)) y ejecuté las pruebas mínimas con sus capturas ([#8](https://github.com/mauricioj97/gestion-solicitudes-servicio/pull/8)). El detalle de cada cambio está en el [historial de commits](https://github.com/mauricioj97/gestion-solicitudes-servicio/commits/main).
 ---
 
 ## 9. Conclusiones y limitaciones
