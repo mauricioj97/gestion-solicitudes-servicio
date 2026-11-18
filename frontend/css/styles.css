@@ -138,3 +138,5 @@ tbody tr:hover { background: #f8fafc; }
 @media (max-width: 520px) { .barra-fila { grid-template-columns: 110px 1fr 32px; } }
 
 footer { text-align: center; color: var(--suave); font-size: .85rem; padding: 1rem; }
+
+@media print { .barra, .acciones-form { display: none; } }

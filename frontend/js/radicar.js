@@ -66,6 +66,8 @@ formulario.addEventListener("submit", async (evento) => {
       <p>Estado actual: ${etiquetaEstado(r.estado)}</p>
       <div class="acciones-form">
         <a class="boton" href="consultar.html?radicado=${encodeURIComponent(r.radicado)}">Consultar esta solicitud</a>
+	<button type="button" class="boton secundario" onclick="navigator.clipboard.writeText('${r.radicado}'); this.textContent='✔ Copiado'">📋 Copiar número</button>
+        <button type="button" class="boton secundario" onclick="window.print()">🖨️ Imprimir comprobante</button>
         <a class="boton secundario" href="radicar.html">Radicar otra</a>
       </div>`;
   } catch (e) {
