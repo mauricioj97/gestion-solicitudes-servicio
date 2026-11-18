@@ -237,7 +237,7 @@ Usuarios: `coordinacion` (Coordinación), `encargado1` (Carlos Pérez, id 2), `e
 | Resultado esperado | Cada paso se refleja en el siguiente, porque los datos viajan por la API y quedan guardados en la base de datos. |
 | Resultado obtenido | Flujo completo exitoso de principio a fin. |
 | Estado | ✅ Aprobada |
-| Evidencia | `capturas/01-inicio.png` a `capturas/11-resumen.png` |
+| Evidencia | `capturas/01-inicio.png`, `03-radicar-exito.png`, `04-consulta-recibida.png` y de `06-panel-coordinacion.png` a `11-resumen.png` |
 | Método y código HTTP | Peticiones que hace la interfaz: `POST /api/solicitudes` (201), `GET .../consulta/{radicado}` (200), `POST /api/auth/login` (200), `POST .../asignar`, `.../evaluar`, `.../seguimiento`, `.../finalizar` (200), `GET /api/reportes/resumen` (200) |
 
 ### PF-20 — Radicar con una cédula ya registrada (regla adicional RN-13)
