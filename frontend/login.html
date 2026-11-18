@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ingreso del personal</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header class="barra">
+    <div class="contenido">
+      <a class="marca" href="index.html">📋 Solicitudes de Servicio</a>
+      <nav class="menu">
+        <a href="index.html">Inicio</a>
+        <a href="radicar.html">Radicar</a>
+        <a href="consultar.html">Consultar</a>
+        <a href="login.html" class="activo">Personal</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="angosto" style="max-width:440px">
+    <form id="formulario" class="tarjeta" novalidate>
+      <h1>Ingreso del personal</h1>
+      <p class="subtitulo">Solo para coordinación y personal de atención. Los solicitantes no necesitan cuenta.</p>
+      <div id="alerta" class="oculto"></div>
+      <div class="campo"><label for="usuario">Usuario</label>
+        <input id="usuario" autocomplete="username" required></div>
+      <div class="campo" style="margin-top:.8rem"><label for="contrasena">Contraseña</label>
+        <input id="contrasena" type="password" autocomplete="current-password" required></div>
+      <div class="acciones-form"><button class="boton" type="submit" id="entrar">Ingresar</button></div>
+    </form>
+  </main>
+
+  <script src="js/api.js"></script>
+  <script>
+    if (API.token()) location.href = "panel.html";
+
+    const alerta = document.getElementById("alerta");
+    document.getElementById("formulario").addEventListener("submit", async (evento) => {
+      evento.preventDefault();
+      const usuario = document.getElementById("usuario").value.trim();
+      const contrasena = document.getElementById("contrasena").value;
+      if (!usuario || !contrasena) {
+        mostrarAlerta(alerta, "error", "Ingrese su usuario y contraseña.");
+        return;
+      }
+      const boton = document.getElementById("entrar");
+      boton.disabled = true;
+      try {
+        API.guardarSesion(await API.pedir("POST", "/api/auth/login", { usuario, contrasena }));
+        location.href = "panel.html";
+      } catch (e) {
+        mostrarAlerta(alerta, "error", esc(e.detalle));
+      } finally {
+        boton.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>

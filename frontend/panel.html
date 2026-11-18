@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Panel del personal</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header class="barra">
+    <div class="contenido">
+      <a class="marca" href="panel.html">📋 Panel de gestión</a>
+      <div class="usuario-sesion">
+        <span id="nombre-usuario"></span><span class="rol" id="rol-usuario"></span>
+        <button class="boton secundario" id="salir" style="padding:.3rem .8rem">Cerrar sesión</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <nav class="pestanas" id="pestanas">
+      <button data-vista="lista" class="activo">Solicitudes</button>
+      <button data-vista="resumen" id="tab-resumen" class="oculto">Resumen consolidado</button>
+    </nav>
+
+    <div id="alerta" class="oculto"></div>
+
+    <!-- Vista: listado -->
+    <section id="vista-lista">
+      <div class="tarjeta">
+        <h2 id="titulo-lista">Solicitudes</h2>
+        <div class="filtros" id="filtros">
+          <button data-estado="" class="activo">Todas</button>
+          <button data-estado="RECIBIDA">Recibidas</button>
+          <button data-estado="ASIGNADA">Asignadas</button>
+          <button data-estado="EN_GESTION">En gestión</button>
+          <button data-estado="FINALIZADA">Finalizadas</button>
+          <button data-estado="CERRADA">Cerradas</button>
+        </div>
+        <div class="tabla-contenedor">
+          <table>
+            <thead><tr><th>Radicado</th><th>Solicitante</th><th>Tipo</th><th>Asunto</th><th>Estado</th><th>Encargado</th><th>Radicada</th><th></th></tr></thead>
+            <tbody id="tabla"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Vista: detalle de una solicitud -->
+    <section id="vista-detalle" class="oculto"></section>
+
+    <!-- Vista: resumen consolidado (solo coordinación) -->
+    <section id="vista-resumen" class="oculto"></section>
+  </main>
+
+  <script src="js/api.js"></script>
+  <script src="js/panel.js"></script>
+</body>
+</html>
