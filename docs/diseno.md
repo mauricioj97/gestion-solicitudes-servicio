@@ -398,10 +398,10 @@ Errores de validación (422), indicando cada campo:
 ```json
 {
   "nombre": "María Fernanda López",
-  "cedula": "1085123456",
+  "cedula": "1000000001",
   "direccion": "Calle 18 # 25-40, Pasto",
-  "telefono": "3104567890",
-  "correo": "maria.lopez@correo.com",
+  "telefono": "3000000001",
+  "correo": "maria.lopez@ejemplo.com",
   "tipo_id": 1,
   "asunto": "Certificado de residencia",
   "descripcion": "Solicito un certificado de residencia para presentar en mi trabajo."
